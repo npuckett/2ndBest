@@ -7,11 +7,9 @@ Based on: https://www.arduino.cc/en/Tutorial/BuiltInExamples/AnalogReadSerial
 
 */
 
-int sensorValue0;
-int sensorValue1;
-int sensorValue2;
-int sensorValue3;
-int sensorValue4;
+const int NUM_SENSORS = 5;
+int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4};
+int sensorValues[NUM_SENSORS];
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -22,25 +20,19 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
 
-  sensorValue0 = analogRead(A0);  // read the input on analog pin
-  Serial.print(sensorValue0);     // print the value
-  Serial.print(", ");             // print a comma and space
+  // Read all sensors into array
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    sensorValues[i] = analogRead(sensorPins[i]);
+  }
 
-  sensorValue1 = analogRead(A1);  // read the input on analog pin
-  Serial.print(sensorValue1);     // print the value
-  Serial.print(", ");             // print a comma and space
-
-  sensorValue2 = analogRead(A2);  // read the input on analog pin
-  Serial.print(sensorValue2);     // print the value
-  Serial.print(", ");             // print a comma and space
-
-  sensorValue3 = analogRead(A3);  // read the input on analog pin
-  Serial.print(sensorValue3);     // print the value
-  Serial.print(", ");             // print a comma and space
-
-  sensorValue4 = analogRead(A4);  // read the input on analog pin
-  Serial.print(sensorValue4);     // print the value
-  Serial.println();               // print a new line
+  // Print sensor values in CSV format
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    Serial.print(sensorValues[i]);
+    if (i < NUM_SENSORS - 1) {
+      Serial.print(", ");
+    }
+  }
+  Serial.println();
 
   delay(50);  // delay in between reads for stability
 }
